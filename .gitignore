@@ -1,3 +1,12 @@
+#User defined
+*.log
+*.png
+settings.txt
+*.exe
+page.txt
+hash.txt
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
