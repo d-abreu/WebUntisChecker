@@ -1,0 +1,11 @@
+{
+    "UntisUrl": "https://abc/WebUntis/?school=abcID",
+    "Username": "abc",
+    "Password": "pwd",
+    "EmailsToNotify": ["a@a.com","b@b.com"],
+    "SmtpServer": "smtp.gmail.com",
+    "SmtpPort": 587,
+    "SmtpUsername": "b@gmail.com",
+    "SmtpPassword": "pwd",
+    "IsSmtpConnectionSafe": true
+}
