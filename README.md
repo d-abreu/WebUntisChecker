@@ -1,4 +1,4 @@
-# UntisChecker
+# WebUntisChecker
 Checks for updates of the time table in the WebUntis platform. Very basic implementation, first project with python.
 
 # Dependencies
