@@ -1,4 +1,4 @@
-#!C:\Program Files\Python35\Scripts\ python3
+#!/usr/bin/python3
 
 import os.path
 import datetime
