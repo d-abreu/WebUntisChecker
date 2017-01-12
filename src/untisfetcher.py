@@ -3,18 +3,18 @@ from selenium import webdriver
 import datetime
 
 def fetch(url,username,password):
-    driver = webdriver.Firefox()
-    #driver = webdriver.PhantomJS() 
-    #driver.set_window_size(1120, 1120)
+    #driver = webdriver.Firefox()
+    driver = webdriver.PhantomJS() 
+    driver.set_window_size(1120, 1120)
     driver.get(url)
     driver.find_element_by_id('loginWidget.idusername').send_keys(username)
     driver.find_element_by_id('loginWidget.idpassword').send_keys(password)
     driver.find_element_by_id('dijit_form_Button_0').click()
     driver.get(url+'#Timetable?type=2&formatId=1&id=14')
-    time.sleep(10) #wait for js to load
+    time.sleep(15) #wait for js to load
     if(datetime.datetime.today().weekday() == 5 or datetime.datetime.today().weekday() == 6 ):
         driver.find_element_by_class_name('fa-caret-right').click()
-        time.sleep(6)
+        time.sleep(10)
     try:
         elements = driver.find_elements_by_class_name('nowMarker')
         script = """
