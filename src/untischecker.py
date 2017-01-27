@@ -3,7 +3,7 @@
 import os.path
 import datetime
 import untiscomparer as comparer
-import untisfetcher as fetcher
+import untisfetcher
 import untisnotifier as notifier
 import untisparser as parser
 import simplejson as json
@@ -23,6 +23,9 @@ def execute():
 
     settings = json.loads(jsonSettings)
 
+    fetcher = untisfetcher.UntisFetcher()
+    fetcher.on()
+
     fetcher.fileName = 'page.txt'
     fetcher.screenshotFileName = 'file.png'
     currentWeek = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"],False)
@@ -30,8 +33,11 @@ def execute():
 
     fetcher.fileName = 'page_next.txt'
     fetcher.screenshotFileName = 'file_next.png'
+    fetcher.loggedIn = True
     nextWeek = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"],True)
     print('Next week fetched')
+
+    fetcher.off()
 
     print('Generating hash')
     currentWeekHash = parser.parse(currentWeek)
@@ -51,7 +57,7 @@ def execute():
 
     
     comparer.src = 'next_hash.txt'
-    hasChanged = comparer.hasChanges(currentWeekHash)
+    hasChanged = comparer.hasChanges(nextWeekHash)
     if(hasChanged):
         print('Changes detected...notifiying!')
         notifier.src = 'file_next.png'
