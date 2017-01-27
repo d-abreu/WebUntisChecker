@@ -39,6 +39,20 @@ def execute():
 
     fetcher.off()
 
+    exists = os.path.isfile('lastUpdate.txt')
+    lastUpdate = 0
+    if(exists):
+        file = open('lastUpdate.txt', mode='rt', encoding='utf-8')
+        lastUpdate = file.read()
+        file.close()
+    if lastUpdate == fetcher.lastUpdate:
+        print('No update since last time')
+        exit
+
+    file = open('lastUpdate.txt', mode='wt', encoding='utf-8')
+    file.write(fetcher.lastUpdate)
+    file.close()
+
     print('Generating hash')
     currentWeekHash = parser.parse(currentWeek)
     nextWeekHash = parser.parse(nextWeek)

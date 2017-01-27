@@ -26,10 +26,9 @@ class UntisFetcher():
         if not self.loggedIn:
             self.logIn(url, username, password)
         self.getPage(url, username, password)
-        self.lastUpdate = self.driver.find_elements_by_class_name('grupetWidgetTimetableUpdateTimestamp')
+        self.lastUpdate = self.driver.find_element_by_class_name('grupetWidgetTimetableUpdateTimestamp').text
         if(seekAhead or datetime.datetime.today().weekday() == 5 or datetime.datetime.today().weekday() == 6):
             self.moveToNextWeek()
-            self.lastUpdate = self.driver.find_elements_by_class_name('grupetWidgetTimetableUpdateTimestamp')
         try:
             elements = self.driver.find_elements_by_class_name('nowMarker')
             script = """
