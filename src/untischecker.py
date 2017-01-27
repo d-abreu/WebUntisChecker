@@ -7,6 +7,7 @@ import untisfetcher
 import untisnotifier as notifier
 import untisparser as parser
 import simplejson as json
+import sys
 
 def execute():
     msg = 'Starting ' + str(datetime.datetime.now())
@@ -24,20 +25,21 @@ def execute():
     settings = json.loads(jsonSettings)
 
     fetcher = untisfetcher.UntisFetcher()
-    fetcher.on()
+    fetcher.loadSettings(settings)
+    fetcher.open()
 
     fetcher.fileName = 'page.txt'
     fetcher.screenshotFileName = 'file.png'
-    currentWeek = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"],False)
+    currentWeek = fetcher.fetchCurrentWeek()
     print('Current week fetched')
 
     fetcher.fileName = 'page_next.txt'
     fetcher.screenshotFileName = 'file_next.png'
     fetcher.loggedIn = True
-    nextWeek = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"],True)
+    nextWeek = fetcher.fetchNextWeek()
     print('Next week fetched')
 
-    fetcher.off()
+    fetcher.close()
 
     exists = os.path.isfile('lastUpdate.txt')
     lastUpdate = 0
@@ -47,7 +49,7 @@ def execute():
         file.close()
     if lastUpdate == fetcher.lastUpdate:
         print('No update since last time')
-        exit
+        sys.exit()
 
     file = open('lastUpdate.txt', mode='wt', encoding='utf-8')
     file.write(fetcher.lastUpdate)
