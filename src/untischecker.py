@@ -23,26 +23,43 @@ def execute():
 
     settings = json.loads(jsonSettings)
 
-    text = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"])
-    print('Fetched')
+    fetcher.fileName = 'page.txt'
+    fetcher.screenshotFileName = 'file.png'
+    currentWeek = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"],False)
+    print('Current week fetched')
 
-    print('Reading file')
-    file = open('page.txt', mode='rt', encoding='utf-8')
-    text = file.read()
-    file.close()
-    print('Finished reading file')
+    fetcher.fileName = 'page_next.txt'
+    fetcher.screenshotFileName = 'file_next.png'
+    nextWeek = fetcher.fetch(settings["UntisUrl"], settings["Username"], settings["Password"],True)
+    print('Next week fetched')
 
     print('Generating hash')
-    hashRes = parser.parse(text)
-    print ('Hash: ' + hashRes)
+    currentWeekHash = parser.parse(currentWeek)
+    nextWeekHash = parser.parse(nextWeek)
+    print ('Current week hash: ' + currentWeekHash)
+    print ('Next week hash: ' + nextWeekHash)
 
-    hasChanged = comparer.hasChanges(hashRes)
+    comparer.src = 'hash.txt'
+    hasChanged = comparer.hasChanges(currentWeekHash)
     if(hasChanged):
         print('Changes detected...notifiying!')
+        notifier.src = 'file.png'
         for email in settings["EmailsToNotify"]:
-            notifier.notify(settings["SmtpUsername"], email, settings["SmtpServer"], settings["SmtpPort"], settings["SmtpPassword"], settings["IsSmtpConnectionSafe"])
+            notifier.notify('Current week',settings["SmtpUsername"], email, settings["SmtpServer"], settings["SmtpPort"], settings["SmtpPassword"], settings["IsSmtpConnectionSafe"])
     else:
         print('No changes detected')
+
+    
+    comparer.src = 'next_hash.txt'
+    hasChanged = comparer.hasChanges(currentWeekHash)
+    if(hasChanged):
+        print('Changes detected...notifiying!')
+        notifier.src = 'file_next.png'
+        for email in settings["EmailsToNotify"]:
+            notifier.notify('Next week',settings["SmtpUsername"], email, settings["SmtpServer"], settings["SmtpPort"], settings["SmtpPassword"], settings["IsSmtpConnectionSafe"])
+    else:
+        print('No changes detected')
+
 
 if __name__ == '__main__':
    execute()

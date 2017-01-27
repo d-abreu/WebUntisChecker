@@ -5,6 +5,8 @@ settings.txt
 *.exe
 page.txt
 hash.txt
+next_hash.txt
+page_next.txt
 .vscode/
 
 # Byte-compiled / optimized / DLL files

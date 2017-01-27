@@ -1,7 +1,9 @@
 import os.path
 
+src = 'hash.txt'
+
 def hasChanges(actualHash):
-    exists = os.path.isfile('hash.txt')
+    exists = os.path.isfile(src)
     hasChanges = False
     if((not exists) or _loadPreviousHash() != actualHash):
         _saveHash(actualHash)
@@ -9,12 +11,12 @@ def hasChanges(actualHash):
     return hasChanges
 
 def _saveHash(hashToBeSaved):
-    file = open('hash.txt', mode='wt', encoding='utf-8')
+    file = open(src, mode='wt', encoding='utf-8')
     file.write(hashToBeSaved)
     file.close()
 
 def _loadPreviousHash():
-    file = open('hash.txt', mode='rt', encoding='utf-8')
+    file = open(src, mode='rt', encoding='utf-8')
     previousHash = file.read()
     file.close()
     return previousHash

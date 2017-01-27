@@ -5,7 +5,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 
-def notify(send_from,send_to,smtp_server,smtp_port,smtp_password,is_tls):
+src = "file.png"
+
+def notify(week, send_from,send_to,smtp_server,smtp_port,smtp_password,is_tls):
     msg = MIMEMultipart(
         From=send_from,
         To=send_to,
@@ -13,7 +15,7 @@ def notify(send_from,send_to,smtp_server,smtp_port,smtp_password,is_tls):
     )
     msg.attach(MIMEText("Untis plan was updated"))
 
-    reader = open("file.png","rb")
+    reader = open(src,"rb")
     msg.attach(MIMEApplication(
                 reader.read(),
                 Content_Disposition='attachment; filename="plan.png"',
