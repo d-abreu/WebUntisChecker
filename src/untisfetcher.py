@@ -1,7 +1,8 @@
 import time
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+#from selenium.webdriver.support.ui import WebDriverWait
+#from selenium.webdriver.support import expected_conditions as EC
+#from selenium.webdriver.common.by import By
 import datetime
 
 class UntisFetcher():
@@ -22,6 +23,7 @@ class UntisFetcher():
     def open(self):
         self.driver = webdriver.PhantomJS()
         self.driver.set_window_size(1120, 1120)
+        self.driver.implicitly_wait(10)
 
     def close(self):
         self.driver.close()
@@ -37,7 +39,6 @@ class UntisFetcher():
         if not self.loggedIn:
             self.__logIn()
         self.__getPlanPage()
-        self.lastUpdate = self.driver.find_element_by_class_name('grupetWidgetTimetableUpdateTimestamp').text
         if(isNextWeek or datetime.datetime.today().weekday() == 5 or datetime.datetime.today().weekday() == 6):
             self.__moveToNextWeek()
         try:
@@ -59,13 +60,12 @@ class UntisFetcher():
 
     def __getPlanPage(self):
         count = 0
+        self.driver.get(self.url+'#Timetable?type=2&formatId=1&id=14')
         while True:
             try:
                 if count == 10:
                     break
-                self.driver.get(self.url+'#Timetable?type=2&formatId=1&id=14')
-                WebDriverWait(self.driver, 2)
-                self.driver.find_element_by_id('dijit_layout_BorderContainer_0')
+                self.lastUpdate = self.driver.find_element_by_class_name('grupetWidgetTimetableUpdateTimestamp').text
                 break
             except:
                 count = count+1
@@ -77,16 +77,14 @@ class UntisFetcher():
             try:
                 if count == 10:
                     break
-                self.driver.get(self.url)
-                WebDriverWait(self.driver, 2)
-                self.driver.find_element_by_id('loginWidget.idusername')
+                self.driver.find_element_by_id('loginWidget.idusername').send_keys(self.username)
+                self.driver.find_element_by_id('loginWidget.idpassword').send_keys(self.password)
+                self.driver.find_element_by_id('dijit_form_Button_0').click()
+                self.loggedIn = True
                 break
             except:
                 count = count+1
-        self.driver.find_element_by_id('loginWidget.idusername').send_keys(self.username)
-        self.driver.find_element_by_id('loginWidget.idpassword').send_keys(self.password)
-        self.driver.find_element_by_id('dijit_form_Button_0').click()
-        self.loggedIn = True
+        
 
     def __moveToNextWeek(self):
         count = 0
@@ -94,7 +92,6 @@ class UntisFetcher():
             try:
                 if count == 10:
                     break
-                WebDriverWait(self.driver, 2)
                 self.driver.find_element_by_class_name('fa-caret-right').click()
                 break
             except:
