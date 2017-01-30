@@ -47,7 +47,7 @@ def execute():
         file = open('lastUpdate.txt', mode='rt', encoding='utf-8')
         lastUpdate = file.read()
         file.close()
-    if lastUpdate == fetcher.lastUpdate:
+    if lastUpdate != ' ' and lastUpdate == fetcher.lastUpdate:
         print('No update since last time')
         sys.exit()
 

@@ -23,7 +23,7 @@ class UntisFetcher():
     def open(self):
         self.driver = webdriver.PhantomJS()
         self.driver.set_window_size(1120, 1120)
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(15)
 
     def close(self):
         self.driver.close()
